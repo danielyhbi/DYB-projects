@@ -18,8 +18,11 @@ from the LPile output txt file.
   
 ## Version History:
 v0.7      2022-02-21      First working build. Proof of concept.
+
 v0.8      2022-03-16      Frst alpha version. Functional UI.
+
                           Estalish data structure. Working PYSpring.
+                          
 v0.9      2022-04-19      Ability to populate database entries for SAP to import
                           User can now add modifiers based on depth
 v1.0      2022-04-20      First beta build:
