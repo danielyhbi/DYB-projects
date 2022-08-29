@@ -4,17 +4,17 @@
 
                  Analysis of Individual Piles and Drilled Shafts
                 Subjected to Lateral Loading Using the p-y Method
-                           © 1985-2016 by Ensoft, Inc.
+                           ï¿½ 1985-2016 by Ensoft, Inc.
                                All Rights Reserved
 
 ================================================================================
 
 This copy of LPile is being used by:
 
-TAD
-KPFF
+XXXX
+XXXX
 
-Serial Number of Security Device: 228742229
+Serial Number of Security Device: XXXXXXXX
 
 This copy of LPile is licensed for exclusive use by:
 
@@ -28,19 +28,19 @@ is a violation of the software license agreement.
 --------------------------------------------------------------------------------
 
 Path to file locations:
-\\kpfftac\Projects\2020\2000027 POS Pier 90\KPFF Design\Structural\Analysis & Design\Seismic Design\Soil Behavior\LPile\
+XXXXXXXXX
 
 Name of input data file:      
-2022-02-17_T91_Lateral-Springs_Pile-S-HG.lp9d
+2022-02-17_xxxx_Lateral-Springs_Pile-S-HG.lp9d
 
 Name of output report file:   
-2022-02-17_T91_Lateral-Springs_Pile-S-HG.lp9o
+2022-02-17_xxxx_Lateral-Springs_Pile-S-HG.lp9o
 
 Name of plot output file:     
-2022-02-17_T91_Lateral-Springs_Pile-S-HG.lp9p
+2022-02-17_xxxx_Lateral-Springs_Pile-S-HG.lp9p
 
 Name of runtime message file: 
-2022-02-17_T91_Lateral-Springs_Pile-S-HG.lp9r
+2022-02-17_xxxx_Lateral-Springs_Pile-S-HG.lp9r
 
 
 
@@ -56,10 +56,10 @@ Name of runtime message file:
                                   Problem Title
 --------------------------------------------------------------------------------
 
-Project Name: T91 Berths 6 & 8 Redevelopment                                                                                                                                                                                                                    
-Job Number: 2000027                                                                                                                                                                                                                                             
-Client: Port of Seattle                                                                                                                                                                                                                                         
-Engineer: TAD                                                                                                                                                                                                                                                   
+Project Name: xxxxxxxxxxxxxxxxx                                                                                                                                                                                                                    
+Job Number: xxxxxx                                                                                                                                                                                                                                             
+Client: xxxxx                                                                                                                                                                                                                                        
+Engineer: xxxxx                                                                                                                                                                                                                                                   
 Description: Lateral Soil Spring Generation                                                                                                                                                                                                                     
 
 
