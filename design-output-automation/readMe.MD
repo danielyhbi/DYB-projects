@@ -24,15 +24,20 @@ from the LPile output txt file.
     - UI Improvements: User now able to input preferences in creating SAP import
     - Ability to rename directions
 - v1.01     2022-04-22      Minor fixes and more instruction on how to use the spreadsheet
-- v1.02     2022-04-28      Fix error upon exit choose file without selecting a file
-   -                       Provided System Status
-- v1.1      2022-05-12      Included Preference Override: User can exclude springs and customize names
-   -                       Include option to have no dividers for stock names
-- v1.2      2022-05-21      Modified SAP output (one property definition per link)
-   -                       Check file path validity before runs
-- v1.2.1    2022-05-25      Minor UI Improvements
-- v1.3      2022-07-23      Code Efficiency Improvements (Finite State Machine)
-   -                        Output print py-spring if needed (runs 50% faster)
+- v1.02     2022-04-28      
+    - Fix error upon exit choose file without selecting a file
+    - Provided System Status
+- v1.1      2022-05-12      
+    - Included Preference Override: User can exclude springs and customize names
+    - Include option to have no dividers for stock names
+- v1.2      2022-05-21      
+    - Modified SAP output (one property definition per link)
+    - Check file path validity before runs
+- v1.2.1    2022-05-25      
+    - Minor UI Improvements
+- v1.3      2022-07-23      
+    - Code Efficiency Improvements (Finite State Machine)
+    - Output print py-spring if needed (runs 50% faster)
 - v1.4      2022-08-12      UI Improvements
 
 
