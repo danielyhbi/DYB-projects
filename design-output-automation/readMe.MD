@@ -1,8 +1,8 @@
 # LPile Post-Process Tool
-Author: Daniel Bi (daniel.bi@kpff.com or danielyhbi@gmail.com)
+Author: Daniel Bi (~~daniel.bi@kpff.com~~ or danielyhbi@gmail.com)
 Extends technical support up to July 2025
 
-## Note to Github Reader
+## Note to Github Readers
 I upload this code to demonstrate a side project I did at work. Where I refuse to spend hours looking, copy/pasting
 and formatting stuff from a .txt file to excel and then transfer to another structural program. 
 
@@ -42,7 +42,7 @@ from the LPile output txt file.
 
 
 ## Data Structure:
-An Arraylist of Arraylists. See subroutine "ReadLineNew"
+An Arraylist of Arraylists. See subroutine "ReadDataFSM"
 
 Time complexity: O(n + n) - linear processing time to read and generate negative values
                  O(2n)    - output springs (both positive and negative)
