@@ -8,11 +8,11 @@ Extends technical support up to July 2025
 I upload this code to demonstrate a side project I did at work. Where I refuse to spend hours looking, copy/pasting
 and formatting stuff from a .txt file to excel and then transfer to another structural program. 
 
-* Per request by KPFF, the spreadsheet has been modified as demo version only. All project information are deleted. **Any other usage shall be authorized by them.**
+* Per request by KPFF, the spreadsheet has been modified as demo version only. All project information are deleted. **Any other usage shall be authorized by KPFF Special Projects.**
 
 The macro is intended to run under Windows environment. I upload a sample output just to demonstrate what it looks like.
 
-I wrote this script under my employment at KPFF special projects division. **Any other usage shall be authorized by them.**
+I wrote this script under my employment at KPFF special projects division. **Any other usage shall be authorized by KPFF Special Projects.**
 
 _Module 1 shows the bread and butter of my code, module 2 is a bunch of Macro stuff to make my life easier._
 
