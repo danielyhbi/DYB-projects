@@ -75,10 +75,6 @@ public class KdTree {
       return coordinates;
     }
     
-    public void updateColors() {
-    
-    }
-    
   }
   
   /*
@@ -245,9 +241,7 @@ public class KdTree {
    * @return  the shortest distance
    */
   public NodeKd getShortestDistance(int inputX, int inputY) {
-    
     return this.shortestDistanceHelper(root, new int[]{inputX, inputY}, 0);
-  
   }
   
   private NodeKd shortestDistanceHelper(NodeKd parent, int inputs[], int steps) {

@@ -65,6 +65,26 @@ public interface ImageModel {
   public void applyEdgeDetection(boolean applyBlur);
   
   /**
+   * Rotates image counterclockwise 90 degree.
+   */
+  void rotateImageCounterClockwise();
+  
+  /**
+   * Rotates image clockwise 90 degree.
+   */
+  void rotateImageClockwise();
+  
+  /**
+   * Flips image horizontally.
+   */
+  void flipImageHorizontal();
+  
+  /**
+   * Flips image vertically.
+   */
+  void flipImageVertical();
+  
+  /**
    * Get an image for the controller to update the view.
    * @return a bufferImage. If there's no pixels, will return nothing.
    */

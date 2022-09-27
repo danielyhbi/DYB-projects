@@ -329,6 +329,30 @@ public class ImageControllerGui implements Features {
     view.updateImage(model.getImage());
   }
   
+  @Override
+  public void rotateImageCounterClockwise() {
+    model.rotateImageCounterClockwise();
+    view.updateImage(model.getImage());
+  }
+  
+  @Override
+  public void rotateImageClockwise() {
+    model.rotateImageClockwise();
+    view.updateImage(model.getImage());
+  }
+  
+  @Override
+  public void flipImageHorizontal() {
+    model.flipImageHorizontal();
+    view.updateImage(model.getImage());
+  }
+  
+  @Override
+  public void flipImageVertical() {
+    model.flipImageVertical();
+    view.updateImage(model.getImage());
+  }
+  
   /**
    * Generate flag of a country.
    *

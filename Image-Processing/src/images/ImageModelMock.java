@@ -121,6 +121,26 @@ public class ImageModelMock implements ImageModel {
     
   }
   
+  @Override
+  public void rotateImageCounterClockwise() {
+  
+  }
+  
+  @Override
+  public void rotateImageClockwise() {
+  
+  }
+  
+  @Override
+  public void flipImageHorizontal() {
+  
+  }
+  
+  @Override
+  public void flipImageVertical() {
+  
+  }
+  
   /**
    * Get an image for the controller to update the view.
    *

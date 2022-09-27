@@ -92,6 +92,14 @@ public interface Features {
    */
   void applyContrastEnhancement();
   
+  void rotateImageCounterClockwise();
+  
+  void rotateImageClockwise();
+  
+  void flipImageHorizontal();
+  
+  void flipImageVertical();
+  
   /**
    * Generate flag of a country.
    * @param countryName Name of the country

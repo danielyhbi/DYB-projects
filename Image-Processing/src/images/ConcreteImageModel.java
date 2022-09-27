@@ -22,8 +22,8 @@ public class ConcreteImageModel implements ImageModel {
   private static final double[][] BLUR_MATRIX_3x3
           = new double[][]{{0.0625, 0.125, 0.0625}, {0.125, 0.25, 0.125}, {0.0625, 0.125, 0.0625}};
   private static final int BLUR_MATRIX_HEIGHT = 3;
-  //private static final int BLUR_MATRIX_WIDTH = 3;
   
+  // matrix values for each filters
   private static final double[][] SHARPEN_MATRIX_5x5
           = new double[][]{{-.125, -.125, -.125, -.125, -.125},
             {-.125, .25, .25, .25, -.125},
@@ -49,6 +49,7 @@ public class ConcreteImageModel implements ImageModel {
             {0, 0, 0},
             {-1, -2, -1}};
   
+  // misc final values
   private static final int MIN_COLOR_VALUE = 0;
   private static final int MAX_COLOR_VALUE = 255;
   
@@ -95,11 +96,13 @@ public class ConcreteImageModel implements ImageModel {
     if (!isFilenameValid(filename)) {
       throw new IllegalArgumentException("Something wrong happened: file name might be invalid.");
     }
+    
     // obtain the image matrix
     pixelsExistingImage = ImageUtilities.readImage(filename);
     imageHeight = pixelsExistingImage.length;
     imageWidth = pixelsExistingImage[0].length;
     
+    // keep a copy of the original image
     originalImage = new int[pixelsExistingImage.length][pixelsExistingImage[0].length][3];
     
     // preserve original image
@@ -111,7 +114,6 @@ public class ConcreteImageModel implements ImageModel {
         }
       }
     }
-    
   }
   
   /**
@@ -219,9 +221,9 @@ public class ConcreteImageModel implements ImageModel {
         
         // send to matrix convolution method fo the operation
         int[] color = matrixG[row][col];
+        
         // replace the current matrix value
         pixelsExistingImage[row][col] = color;
-        
       }
     }
   }
@@ -292,7 +294,6 @@ public class ConcreteImageModel implements ImageModel {
     
     for (int row = 0; row < pixelsExistingImage.length; row++) {
       for (int col = 0; col < pixelsExistingImage[row].length; col++) {
-        //for (int channel = 0; channel < pixelsExistingImage[row][col].length; channel++) {
         // update current pixel value
         int channel = 0;
         int oldColor = pixelsExistingImage[row][col][channel];
@@ -323,10 +324,8 @@ public class ConcreteImageModel implements ImageModel {
       throw new IllegalArgumentException("Seed input shall be a positive integer!");
     }
     
-    // initialize while loop and treeSet
-    int count = 0;
     // get the seed points and construct a KD Tree
-    int[][] seedPoints = getRandomPixel_2(seeds);
+    int[][] seedPoints = getRandomPixel(seeds);
     KdTree seedTree = new KdTree(seedPoints);
     
     // 2. Loop thru each pixels
@@ -335,7 +334,6 @@ public class ConcreteImageModel implements ImageModel {
     int[][] seedOccurrenceCount = new int[imageHeight][imageWidth];
     
     for (int row = 0; row < pixelsExistingImage.length; row++) {
-      //System.out.println(row);
       for (int col = 0; col < pixelsExistingImage[row].length; col++) {
         // for each pixels, get the closest seed location
         pixelMapWithSeeds[row][col] = seedTree.getShortestDistance(row, col).toArray();
@@ -364,13 +362,11 @@ public class ConcreteImageModel implements ImageModel {
       for (int col = 0; col < pixelsExistingImage[row].length; col++) {
         
         if (seedOccurrenceCount[row][col] != 0) {
-          
           for (int index = 0; index < 3; index++) {
             pixelsExistingImage[row][col][index]
                     = pixelsExistingImage[row][col][index] / seedOccurrenceCount[row][col];
           }
         }
-  
       }
     }
     
@@ -387,113 +383,7 @@ public class ConcreteImageModel implements ImageModel {
       }
     }
   }
-  
-  //@Override
-  public void applyMosaicOld(int seeds) throws IllegalArgumentException {
-    // check input validity
-    if (!isMosaicSeedValid(seeds)) {
-      throw new IllegalArgumentException("Seed input shall be a positive integer!");
-    }
-    
-    // 1. generate random set of pixels as maps
-    //    HashMap <Integer, int[row, col, Sum R, Sum G, Sum B, Count]>
-    //    key = Arrays.Hashcode({seedX, seedY})
-    
-    // initialize while loop and treeSet
-    int count = 0;
-    
-    List<Map<Integer, int[]>> seedListByRow = getRandomPixel_2Old(seeds);
-    
-    // 2. Loop thru each pixels
-    // 2.0 create a 2D int[][] of the pixels, the value will be whatever the seeds to be calced
-    int[][] pixelMapWithSeeds = new int[imageHeight][imageWidth];
-    
-    for (int row = 0; row < pixelsExistingImage.length; row++) {
-      System.out.println(row);
-      for (int col = 0; col < pixelsExistingImage[row].length; col++) {
-        
-        double[] distance = new double[]{-10, 0, 0}; // impose an invalid double[] for initial use
-        
-        double precentAreaExtend = 0.10;
-        
-        int rowLowBound = (int) Math.max(0, row - imageHeight * precentAreaExtend);
-        int rowUpBound = (int) Math.min(imageHeight, row + imageHeight * precentAreaExtend);
-        
-        // 2.1 - NEW
-        // loop through the list for that extended area
-        for (int i = rowLowBound; i < rowUpBound; i++) {
-          // initialize a temp hash map
-          Map<Integer, int[]> seedMapPerRow = seedListByRow.get(i);
-          // for hashmap in that looped row, compute the closest distance
-          for (int key : seedListByRow.get(i).keySet()) {
-            int[] decode = unhashPixel(key);
-            boolean isWithin = isWithinRange(row, col, decode[0], decode[1]);
-            
-            if (seeds <= 100 || isWithin) {
-              // get the seed pixel information
-              int[] value = seedMapPerRow.get(key);
-              // Will output a new min distance package (or the same one if not less than)
-              // input double[] distance {previous distance, previousSeedRow, previousSeedCol}
-              distance = calcEuclideanDist(distance, row, col, value[0], value[1]);
-            }
-          }
-          // at this point, the closest distance should be calculated for pixel [row, col].
-          // moving on.
-        }
-        
-        // 2.2 once looping thru the whole set, a min distance should be computed
-        // update the pixel map[][] with the appropriate seed (with hashed code)
-        //String newKey = hashPixel(new int[]{(int) distance[1], (int) distance[2]});
-        int newKey = hashPixel(new int[]{(int) distance[1], (int) distance[2]});
-        pixelMapWithSeeds[row][col] = newKey;
-        
-        // 2.3 go back to the random seed Map and update the values += R, G, B, count++
-        // get the existing array of things from the map
-        Map<Integer, int[]> seedMapPerRow = seedListByRow.get((int) distance[1]);
-        int[] updateValue = seedMapPerRow.get(newKey);
-        // update treeMap/hashMap with key seedMap[i][j] = += R, G, B, count++
-        updateValue[2] += pixelsExistingImage[row][col][0];
-        updateValue[3] += pixelsExistingImage[row][col][1];
-        updateValue[4] += pixelsExistingImage[row][col][2];
-        updateValue[5] += 1;
-        
-        seedMapPerRow.replace(newKey, updateValue);
-        seedListByRow.set((int) distance[1], seedMapPerRow);
-      }
-    }
-    
-    // 3. output pixels
-    // 3.1 once all pixels are assigned to a seed, go to the seed and calc their RGB value
-    for (int i = 0; i < seedListByRow.size(); i++) {
-      
-      Map<Integer, int[]> seedMapPerRow = seedListByRow.get(i);
-      
-      for (int key : seedMapPerRow.keySet()) {
-        
-        // get the value of that key
-        int[] value = seedMapPerRow.get(key);
-        // replace RBG value
-        value[2] = getColorValue(value[2] / value[5]);
-        value[3] = getColorValue(value[3] / value[5]);
-        value[4] = getColorValue(value[4] / value[5]);
-      }
-    }
-    
-    // 3.2 for each pixel location [][], go to the treemap and get the value
-    for (int row = 0; row < pixelsExistingImage.length; row++) {
-      for (int col = 0; col < pixelsExistingImage[row].length; col++) {
-        
-        int seedRow = unhashPixel(pixelMapWithSeeds[row][col])[0];
-        
-        int[] newColors = seedListByRow.get(seedRow).get(pixelMapWithSeeds[row][col]);
-        
-        // modify the RGB value
-        for (int channel = 0; channel < 3; channel++) {
-          pixelsExistingImage[row][col][channel] = newColors[2 + channel];
-        }
-      }
-    }
-  }
+
   
   /**
    * Apply edge detection through sobel operator. (Part of homework 10)
@@ -553,6 +443,81 @@ public class ConcreteImageModel implements ImageModel {
     }
   }
   
+  @Override
+  public void rotateImageCounterClockwise() {
+    // Will create a new image array and transfer pixels (one-to-one)
+    int newLength = pixelsExistingImage.length;
+    int newHeight = pixelsExistingImage[0].length;
+    
+    int[][][] rotatedImage = new int[newHeight][newLength][3];
+    
+    // the first column becomes the bottom row
+    // (or the first row becomes reverse first column)
+    for (int row = 0; row < pixelsExistingImage.length; row++) {
+      for (int col = 0; col < pixelsExistingImage[0].length; col++) {
+        rotatedImage[newHeight - col - 1][row] = pixelsExistingImage[row][col];
+      }
+    }
+    
+    // update
+    pixelsExistingImage = rotatedImage;
+  }
+  
+  @Override
+  public void rotateImageClockwise() {
+    // Will create a new image array and transfer pixels (one-to-one)
+    int newLength = pixelsExistingImage.length;
+    int newHeight = pixelsExistingImage[0].length;
+  
+    int[][][] rotatedImage = new int[newHeight][newLength][3];
+  
+    // the first column becomes the bottom row
+    // (or the first row becomes reverse first column)
+    for (int row = 0; row < pixelsExistingImage.length; row++) {
+      for (int col = 0; col < pixelsExistingImage[0].length; col++) {
+        rotatedImage[col][newLength - row - 1] = pixelsExistingImage[row][col];
+      }
+    }
+  
+    // update
+    pixelsExistingImage = rotatedImage;
+  }
+  
+  @Override
+  public void flipImageHorizontal() {
+    
+    // will just swap pixels for each row
+    for (int row = 0; row < pixelsExistingImage.length; row++) {
+      for (int col = 0; col < pixelsExistingImage[0].length/2 + 1; col++) {
+        
+        int[] tempPixel = pixelsExistingImage[row][col];
+  
+        pixelsExistingImage[row][col]
+                = pixelsExistingImage[row][pixelsExistingImage[0].length - col - 1];
+        
+        pixelsExistingImage[row][pixelsExistingImage[0].length - col - 1] = tempPixel;
+      }
+    }
+  }
+  
+  @Override
+  public void flipImageVertical() {
+    
+    // will just swap pixels for each row
+    for (int row = 0; row < pixelsExistingImage.length / 2 + 1; row++) {
+      for (int col = 0; col < pixelsExistingImage[0].length; col++) {
+      
+        int[] tempPixel = pixelsExistingImage[row][col];
+      
+        pixelsExistingImage[row][col]
+                = pixelsExistingImage[pixelsExistingImage.length - row - 1][col];
+      
+        pixelsExistingImage[pixelsExistingImage.length - row - 1][col] = tempPixel;
+      }
+    }
+    
+  }
+  
   /**
    * Generates a rainbow flag to a user's preference.
    *
@@ -586,13 +551,11 @@ public class ConcreteImageModel implements ImageModel {
     
     // loop through each rainbow colors and assign values
     for (int i = 0; i < RAINBOW_COLORS.length; i++) {
-      
       generateRainbowFlagHelper(RAINBOW_COLORS[i], isHorizontal, segments[i], segments[i + 1] - 1);
     }
     
     // save image
     saveNewImage(filename, generatedImage);
-    
   }
   
   // breaks down to updating each color
@@ -726,12 +689,11 @@ public class ConcreteImageModel implements ImageModel {
     // loop through the array to find the min value
     int totalPixelCount = pixelsExistingImage.length * pixelsExistingImage[0].length;
     int minIntensity = totalPixelCount;
-    System.out.println(totalPixelCount);
+    
     for (int a : histogramOrignal) {
       if (a < minIntensity && a != 0) {
         minIntensity = a;
       }
-      
     }
     // apply normalization equation
     // reference: https://en.wikipedia.org/wiki/Histogram_equalization
@@ -743,7 +705,6 @@ public class ConcreteImageModel implements ImageModel {
       sumIntensity += histogramOrignal[b];
       
       histogramNormalized[b] = sumIntensity * 255 / totalPixelCount;
-      
     }
     
     // reassign each pixels
@@ -758,7 +719,6 @@ public class ConcreteImageModel implements ImageModel {
         }
       }
     }
-    
   }
   
   /**
@@ -773,9 +733,6 @@ public class ConcreteImageModel implements ImageModel {
   public void cropImage(int topLeftXpt, int topLeftYpt, int btmRightXpt, int btmRightYpt) {
     // define the size of the cropped image
     int[][][] croppedImage = new int[btmRightYpt - topLeftYpt + 1][btmRightXpt - topLeftXpt + 1][3];
-    
-    int arrayHeight = btmRightXpt - topLeftXpt + 1;
-    int arrayWidth = btmRightYpt - topLeftYpt + 1;
     
     for (int row = 0; row < croppedImage.length; row++) {
       for (int col = 0; col < croppedImage[0].length; col++) {
@@ -893,7 +850,6 @@ public class ConcreteImageModel implements ImageModel {
                   pixelsExistingImage[row + calcCoeff[r]][col + calcCoeff[c]][channel];
         }
       }
-      
     }
     
     return subPixelMatrix;
@@ -910,8 +866,6 @@ public class ConcreteImageModel implements ImageModel {
         sum += filterMatrix[r][c] * (double) subMatrix[r][c];
       }
     }
-    
-    //System.out.println(sum);
     
     return sum;
   }
@@ -1006,11 +960,10 @@ public class ConcreteImageModel implements ImageModel {
     }
   }
   
-  private int[][] getRandomPixel_2(int seeds) {
+  private int[][] getRandomPixel(int seeds) {
     // generate an array of ordered pixels, first dim for width, second dim for height
     int[][] randomPixel = new int[imageWidth * imageHeight][2];
     int[][] randomPixelOutput = new int[seeds][2];
-    
     int count = 0;
     
     // populate pixels
@@ -1022,54 +975,14 @@ public class ConcreteImageModel implements ImageModel {
     }
     
     // shuffle the array
-    randomPixel = shuffleArrayPrimitive(randomPixel);
-    
+    shuffleArrayPrimitive(randomPixel);
+  
     // assign random pixels but shuffle/reshuffling the array
     for (int i = 0; i < seeds; i++) {
       randomPixelOutput[i] = randomPixel[i];
     }
     
     return randomPixelOutput;
-  }
-  
-  private List<Map<Integer, int[]>> getRandomPixel_2Old(int seeds) {
-    // generate an array of ordered pixels, first dim for width, second dim for height
-    int[][] randomPixel = new int[imageWidth * imageHeight][2];
-    List<Map<Integer, int[]>> seedListByRow = new ArrayList<>();
-    //Map<Integer, int[]> seedMap = new HashMap<Integer, int[]>();
-    
-    for (int i = 0; i < imageHeight; i++) {
-      seedListByRow.add(new HashMap<Integer, int[]>());
-    }
-    
-    int count = 0;
-    
-    // populate pixels
-    for (int loopRow = 0; loopRow < imageHeight; loopRow++) {
-      for (int loopCol = 0; loopCol < imageWidth; loopCol++) {
-        randomPixel[count] = new int[]{loopRow, loopCol};
-        count++;
-      }
-    }
-    
-    // shuffle the array
-    randomPixel = shuffleArrayPrimitive(randomPixel);
-    
-    // assign random pixels but shuffle/reshuffling the array
-    for (int i = 0; i < seeds; i++) {
-      
-      // get the pixel location
-      int row = randomPixel[i][0];
-      //int col = randomPixel[i][1];
-      // take the seed map per row out, add in the pixel location, and re-add back
-      Map<Integer, int[]> seedMapPerRow = seedListByRow.get(row);
-      seedMapPerRow.put(hashPixel(randomPixel[i]),
-              new int[]{randomPixel[i][0], randomPixel[i][1], 0, 0, 0, 0});
-      seedListByRow.set(row, seedMapPerRow);
-      
-    }
-    
-    return seedListByRow;
   }
   
   private int[][] shuffleArrayPrimitive(int[][] toShuffle) {
@@ -1085,69 +998,5 @@ public class ConcreteImageModel implements ImageModel {
     }
     
     return toShuffle;
-  }
-  
-  // private method to filters out seeds that is too far away from the current pixel
-  // Let's define the extend of the pixel range to be 25% of height/width in each direction
-  // tested
-  private Boolean isWithinRange(int row, int col, int seedRow, int seedCol) {
-    
-    double precentAreaExtend = 0.10;
-    
-    int rowLowBound = (int) Math.max(0, row - imageHeight * precentAreaExtend);
-    int rowUpBound = (int) Math.min(imageHeight, row + imageHeight * precentAreaExtend);
-    int colLowBound = (int) Math.max(0, col - imageWidth * precentAreaExtend);
-    int colUpBound = (int) Math.min(imageWidth, col + imageWidth * precentAreaExtend);
-    
-    return (seedRow <= rowUpBound && seedRow >= rowLowBound
-            && seedCol <= colUpBound && seedCol >= colLowBound);
-  }
-  
-  // input double[] distance {previous distance, previousSeedRow, previousSeedCol}
-  // tested
-  private double[] calcEuclideanDist(double[] distance, int row,
-                                     int col, int seedRow, int seedCol) {
-    // compute the Euclidean distance
-    double eucDistance = Math.sqrt(Math.pow((seedRow - row), 2) + Math.pow((seedCol - col), 2));
-    // if the new distance is smaller, update the value
-    if (distance[0] < 0 || distance[0] > eucDistance) {
-      // means existing one has a larger distance, keep the current one instead
-      return new double[]{eucDistance, seedRow, seedCol};
-    }
-    // if it's equal or larger, return previous value
-    return distance;
-  }
-  
-  // I have to use a more sophisticated way to uniquely identify each pixels since Arrays.hashcode
-  // doesn't work well.
-  private int hashPixel(int[] pixelArray) {
-    /* Citation for using Center Pairing Function:
-     “Pairing function,” Wikipedia, 30-Jan-2022. [Online].
-         Available: https://en.wikipedia.org/wiki/Pairing_function. [Accessed: 25-Mar-2022].
-     */
-    int width = pixelArray[0];
-    int height = pixelArray[1];
-    int output = (int) (0.5 * (width + height) * (width + height + 1) + height);
-    return output;
-  }
-  
-  private int[] unhashPixel(int hashedCode) {
-    /* Citation for using Inverse Canter Pairing Function.
-     “Pairing function,” Wikipedia, 30-Jan-2022. [Online].
-         Available: https://en.wikipedia.org/wiki/Pairing_function. [Accessed: 25-Mar-2022].
-     */
-    
-    // Pairing function - reversed
-    int w;
-    int t;
-    int y;
-    int x;
-    
-    w = (int) Math.floor(0.5 * (Math.sqrt(8.0 * hashedCode + 1) - 1));
-    t = (int) (0.5 * (w * w + w));
-    y = hashedCode - t;
-    x = w - y;
-    
-    return new int[]{x, y};
   }
 }

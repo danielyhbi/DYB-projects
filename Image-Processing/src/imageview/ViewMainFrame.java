@@ -437,6 +437,14 @@ public class ViewMainFrame extends JFrame implements View {
     });
     // Menu -> Revert
     menuRevert.addActionListener(l -> f.revertImage());
+    // Menu -> Rotate Counter Clockwise
+    menuRotateCounterClockWise.addActionListener(l -> f.rotateImageCounterClockwise());
+    // Menu -> Rotate clockwise
+    menuRotateClockWise.addActionListener(l -> f.rotateImageClockwise());
+    // Menu -> Flip Horiz
+    menuEditFlipHorizontal.addActionListener(l -> f.flipImageHorizontal());
+    // Menu -> Flip Vert
+    menuEditFlipVertical.addActionListener(l -> f.flipImageVertical());
     
     // Enhance menu
     // Enhance -> Edge Detection
@@ -580,13 +588,6 @@ public class ViewMainFrame extends JFrame implements View {
         }
       }
     });
-    // Generate -> Use Script to Batch Process (not in use)
-    buttonApplyFilter.addActionListener(l -> {
-      String input = scriptText.getText();
-      System.out.println(input);
-      String[] output = input.split(System.lineSeparator());
-      f.applyFilterScript(output);
-    });
     
     // keyboard event
     this.addKeyListener(new KeyListener() {
@@ -633,11 +634,6 @@ public class ViewMainFrame extends JFrame implements View {
         
         if (e.isControlDown() && e.getKeyChar() != 'q' && e.getKeyCode() == 81) {
           f.exitProgram();
-        }
-        
-        if (e.isControlDown() && e.getKeyChar() != 'e' && e.getKeyCode() == 69) {
-          enableScriptEdit();
-          disableEdits();
         }
         
         if (e.isControlDown() && e.getKeyCode() == 49) {
@@ -806,13 +802,6 @@ public class ViewMainFrame extends JFrame implements View {
     menuRotateCounterClockWise.setEnabled(false);
     menuEditFlipHorizontal.setEnabled(false);
     menuEditFlipVertical.setEnabled(false);
-  }
-  
-  private void enableScriptEdit() {
-    scriptText.setText("");
-    scriptText.setEnabled(true);
-    textPanel.setEnabled(true);
-    buttonApplyFilter.setEnabled(true);
   }
   
   private void disableScriptEdit() {
