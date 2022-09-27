@@ -48,6 +48,7 @@ Public Sub Main()
     UpdateSystemStatus "Process complete!"
     
 End Sub
+
 ' @Description("This method prompt user to add in a LPile output for post-processing")
 Public Sub ChooseFile()
 
@@ -88,9 +89,6 @@ Public Sub ReadDepthFromLpile()
     PrintDepthData 29, 1
     
     UpdateSystemStatus "Depth Loaded"
-    
-    'MsgBox "Success! Input file loaded. Please modify P-factors before run."
-
 
 End Sub
 
@@ -100,7 +98,6 @@ Private Sub View()
     With Worksheets("Main Page")
     
         ' Grab parameters
-        
         directionOne = .Cells(14, 3)
         directionTwo = .Cells(15, 3)
         
@@ -175,8 +172,6 @@ End Sub
 '
 ' https://superuser.com/questions/988321/which-excel-objects-are-zero-based-and-which-are-one-based
 Private Sub OutputPySpring(printRow As Long, printCol As Long)
-
-    ' TODO: Refine the passing paramters so it's no so hard coded
     
     ' Plot out raw output without modifiers
     printPySpringHelper "Raw p-y Spring Output for Each Depth", 1, 1, 0
@@ -415,7 +410,6 @@ Private Sub PrintSapHelper(startRow As Long, depthCount As Long, namePreference 
         Else
             linkName = linkNameCustom & linkNameDivider & linkNumber
         End If
-        
         
         ' Output actual PY Spring data
         ' Within each depth, loop through each entry of within that depth
