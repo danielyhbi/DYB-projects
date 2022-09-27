@@ -6,6 +6,8 @@ Implemented with Java Swing, with full Model-Control-View (MVC) design.
 * Author: Daniel Bi (danielyhbi@gmail.com)
 * Date: 9/27/2022
 
+![DemoImage](./test/LandingPage.jpg)
+
 ## List of Features
 9/27/2022 update - For Public and Interested Professionals/Recruiters:
 - Improved UI (Eliminated the script interface + minor UI improvements)
