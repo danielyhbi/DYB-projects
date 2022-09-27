@@ -1,17 +1,21 @@
-# Image Processing Through Script
-This image processing app provides both the graphical user interface and script interface to process images.
+# Image Processing
+This image processing app provides a graphical user interface to edit your images.
 
-The code is written in Java with MCV implemented.
+Implemented with Java Swing, with full Model-Control-View (MVC) design.
 
-Author: Daniel Bi.  
-Date: 5/31/2022
+* Author: Daniel Bi (danielyhbi@gmail.com)
+* Date: 9/27/2022
 
 ## List of Features
+9/27/2022 update - For Public and Interested Professionals/Recruiters:
+- Improved UI (Eliminated the script interface + minor UI improvements)
+- Add feature to rotate, and flip image
+- Generated image will be saved in folder `/saved-generated-image`
 
 5/31/2022 update:
-- Improved mosaic processing time (instant now). Implemented k-d tree to store seeds value.
+- Improved mosaic processing time (O(n log(n))). Implemented k-d tree to store seeds value.
 
-5/4/2022 update:
+5/4/2022 update - For Final Project Submission in CS5004:
 - New filter added: Sobel Edge detection, Contrast Enhance (histogram equalization)
 - Generate county flags, rainbow flags, and check board patterns without loading a file
 - Crop image
@@ -26,34 +30,17 @@ Date: 5/31/2022
 - Dither
 - Mosaic
 
-All filters can be added on top of each other. Multiple images can be loaded and saved in one script
+All filters can be added on top of each other. 
 
 ## Limitation
 
-The code process the script in a linear fashion. Meaning you can only load, process, save an image sequentially. You can not load two images and process them both at the same time.
-
-There's no un-do button. but there is a "revert to original image" option.
-
-Note: Script editing on the new features are no longer supported
+* There's no un-do button. but there is a "revert to original image" option.
+* Will not automatically resize large image
+* Note: Script editing on the new features are no longer supported
 
 ## How to run
 
-GUI: Should be straight forward
-
-Script: Go to "Edit" -> "Edit/View Script File" 
-        
-> List commands **in order** and  then run the click "Run Script".
-
-## Example
-
-A sample script is provided below:
-
->load ny-manhattan-bridge.png  
->blur  
->blur  
->save ny-manhattan-bridge-blurred-2.png  
->sepia  
->save ny-manhattan-bridge-blurred-sepia.png
+GUI: Run the file at: `/imageview/MainViewDriver.java`
 
 ## Citations
 
