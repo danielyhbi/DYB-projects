@@ -31,16 +31,16 @@ Path to file locations:
 XXXXXXXXX
 
 Name of input data file:      
-2022-02-17_xxxx_Lateral-Springs_Pile-S-HG.lp9d
+_xxxx_Lateral-Springs_Pile.lp9d
 
 Name of output report file:   
-2022-02-17_xxxx_Lateral-Springs_Pile-S-HG.lp9o
+_xxxx_Lateral-Springs_Pile.lp9o
 
 Name of plot output file:     
-2022-02-17_xxxx_Lateral-Springs_Pile-S-HG.lp9p
+_xxxx_Lateral-Springs_Pile.lp9p
 
 Name of runtime message file: 
-2022-02-17_xxxx_Lateral-Springs_Pile-S-HG.lp9r
+_xxxx_Lateral-Springs_Pile.lp9r
 
 
 
