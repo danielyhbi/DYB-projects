@@ -3,6 +3,8 @@ This image processing app provides a graphical user interface to edit your image
 
 Implemented with Java Swing, with full Model-Control-View (MVC) design.
 
+>**In the process to convert code base from Java Swing to Flutter/Dart for a modern, cross-platform redesign**
+
 * Author: Daniel Bi (danielyhbi@gmail.com)
 * Date: 9/27/2022
 
